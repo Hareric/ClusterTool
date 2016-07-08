@@ -31,7 +31,6 @@ from CaculateDistance import euclidian_distance
 import time
 
 
-
 class OnePassCluster:
     def __init__(self, threshold, vector_list):
         self.threshold = threshold  # 一趟聚类的阀值
