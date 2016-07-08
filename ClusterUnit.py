@@ -42,6 +42,8 @@ class ClusterUnit:
         :param node: 节点
         :return: null
         """
+        # np.append(self.node_list, node)
+        # self.node_list += [node]
         self.node_list.append(node)
         try:
             self.centroid = (self.node_num * self.centroid + node_vec) / (self.node_num + 1)  # 更新簇心

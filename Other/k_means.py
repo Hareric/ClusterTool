@@ -19,11 +19,11 @@ def kmeans(k, vectors):  # k_means聚类,k为簇数
 if __name__ == '__main__':
     temperature_all_city = np.loadtxt('c2.txt', delimiter=",", usecols=(3, 4))  # 读取聚类特征
     xy = np.loadtxt('c2.txt', delimiter=",", usecols=(8, 9))  # 读取各地经纬度
-    k = 5
+    k = 10
     t1 = time.time()
     cluster_result = kmeans(k=k, vectors=temperature_all_city)
     t2 = time.time()
-    print "spend time %.5fs" % ((t2 - t1) / 1000)
+    print "spend time %.9fs" % ((t2 - t1) / 1000)
     fig, ax = pl.subplots()
     cmap = pl.get_cmap('jet', k)
     for i in range(len(xy)):

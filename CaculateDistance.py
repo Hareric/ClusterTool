@@ -27,6 +27,7 @@ Create_Time = 2016/07/05
 """
 
 import numpy as np
+from math import sqrt
 
 
 def euclidian_distance(vec_a, vec_b):
@@ -36,4 +37,6 @@ def euclidian_distance(vec_a, vec_b):
     :param vec_b:
     :return: 欧氏距离
     """
-    return np.sqrt(np.sum(np.square(np.array(vec_a) - vec_b)))
+    diff = vec_a - vec_b
+    return sqrt(np.dot(diff, diff))
+    # return np.sqrt(np.sum(np.square(vec_a - vec_b)))
