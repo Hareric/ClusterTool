@@ -24,5 +24,5 @@ if __name__ == '__main__':
         print i, np.where(cluster_result == i)[0]
         print '-------'
 
-    o_p_c = OnePassCluster(threshold=0.1927, vector_list=vectors)
+    o_p_c = OnePassCluster(t=0.1927, vector_list=vectors)
     o_p_c.print_result()

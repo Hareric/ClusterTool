@@ -32,8 +32,13 @@ import time
 
 
 class OnePassCluster:
-    def __init__(self, threshold, vector_list):
-        self.threshold = threshold  # 一趟聚类的阀值
+    def __init__(self, t, vector_list):
+        """
+        :param t: float, 一趟聚类的阀值
+        :param vector_list: array-like, shape = [samples_size, features_size]
+        :return:
+        """
+        self.threshold = t  # 一趟聚类的阀值
         self.vectors = np.array(vector_list)
         self.cluster_list = []  # 聚类后簇的列表
         t1 = time.time()
@@ -95,7 +100,7 @@ if __name__ == '__main__':
     f.close()
 
     # 构建一趟聚类器
-    clustering = OnePassCluster(vector_list=temperature_all_city, threshold=9)
+    clustering = OnePassCluster(vector_list=temperature_all_city, t=9)
     clustering.print_result(label_dict=zone_dict)
 
     # 将聚类结果导出图
