@@ -44,5 +44,5 @@ def snn_sim_matrix(X, k=1):
     # three_tuple = np.array
 
 if __name__ == '__main__':
-    X = [1,2,[3]]
+    X = np.array([1,2,[3]])
     snn_sim_matrix(X)
