@@ -1,7 +1,7 @@
 print(__doc__)
 
 import numpy as np
-
+import time
 from sklearn.cluster import DBSCAN
 from sklearn import metrics
 from sklearn.datasets.samples_generator import make_blobs
@@ -15,10 +15,12 @@ X, labels_true = make_blobs(n_samples=750, centers=centers, cluster_std=0.4,
                             random_state=0)
 
 X = StandardScaler().fit_transform(X)
-
 ##############################################################################
 # Compute DBSCAN
+t1 = time.time()
 db = DBSCAN(eps=0.3, min_samples=10).fit(X)
+t2 = time.time()
+print t2 - t1
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
 core_samples_mask[db.core_sample_indices_] = True
 labels = db.labels_

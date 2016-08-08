@@ -41,7 +41,7 @@ X = np.random.random((30, 3))
 # r = np.linspace(0, 1, 5)
 tree = KDTree(X, leaf_size=2)
 dist, ind = tree.query(X[0], k=10)
-s = pickle.dumps(tree)
-print s
-# print ind
-# print dist
+# s = pickle.dumps(tree)
+# print s
+print ind
+print dist
