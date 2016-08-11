@@ -33,15 +33,20 @@
 # print euclidean_distance2(u, v)
 
 import numpy as np
-from sklearn.neighbors import KDTree
-import pickle
-np.random.seed(0)
-X = np.random.random((30, 3))
-# print X
-# r = np.linspace(0, 1, 5)
-tree = KDTree(X, leaf_size=2)
-dist, ind = tree.query(X[0], k=10)
-# s = pickle.dumps(tree)
-# print s
-print ind
-print dist
+# from sklearn.neighbors import KDTree
+# import pickle
+# np.random.seed(0)
+# X = np.random.random((30, 3))
+# # print X
+# # r = np.linspace(0, 1, 5)
+# tree = KDTree(X, leaf_size=2)
+# dist, ind = tree.query(X[0], k=10)
+# # s = pickle.dumps(tree)
+# # print s
+# print ind
+# print dist
+from itertools import combinations
+a = np.array([[1, 2, 3], [2, 1, 4], [1, 5, 3]])
+b = np.array([2, 3, 2])
+c = np.where(a == 1)[0]
+print list(combinations(c, 2))
