@@ -35,7 +35,7 @@ def snn_sim_matrix(X, k=5, t=1):
     """
     利用sklearn包中的KDTree,计算节点的共享最近邻相似度(SNN)矩阵
     :param X: array-like, shape = [samples_size, features_size]
-    :param k: positive integer(default = 5), 计算snn相似度时从k个最近邻中确定
+    :param k: positive integer(default = 5), 计算snn相似度的阈值k
     :param t: positive integer(default = 1), 稀疏化相似度矩阵的阈值,只保留相似度不小于t的对象
     :return: 三元组表保存的相似度矩阵
     """
@@ -53,8 +53,16 @@ def snn_sim_matrix(X, k=5, t=1):
         for j in c:
             sim_matrix[j[0]][j[1]] += 1
             sim_matrix[j[1]][j[0]] += 1
-    return coo_matrix(sim_matrix)
-
+    max_ = sim_matrix.max()
+    min_ = sim_matrix.min()
+    for i in range(samples_size):
+        for j in range(samples_size):
+            if sim_matrix[i][j] == 0:
+                sim_matrix[i][j] = 10
+            else:
+                sim_matrix[i][j] = 1. / sim_matrix[i][j]
+    # return coo_matrix(sim_matrix)
+    return sim_matrix
 
 if __name__ == '__main__':
     # X = [[1, 2, 3], [2, 4, 5], [2, 3, 1], [4, 5, 1]]
@@ -83,7 +91,7 @@ if __name__ == '__main__':
     print t2 - t1
     ##############################################################################
     # Compute DBSCAN
-    db = DBSCAN(eps=5, min_samples=3, metric='precomputed').fit(sim_matrix)
+    db = DBSCAN(eps=0.5, min_samples=3, metric='precomputed').fit(sim_matrix)
 
     core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
     core_samples_mask[db.core_sample_indices_] = True
@@ -92,16 +100,16 @@ if __name__ == '__main__':
     # Number of clusters in labels, ignoring noise if present.
     n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 
-    print('Estimated number of clusters: %d' % n_clusters_)
-    print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
-    print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
-    print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
-    print("Adjusted Rand Index: %0.3f"
-          % metrics.adjusted_rand_score(labels_true, labels))
-    print("Adjusted Mutual Information: %0.3f"
-          % metrics.adjusted_mutual_info_score(labels_true, labels))
-    print("Silhouette Coefficient: %0.3f"
-          % metrics.silhouette_score(X, labels))
+    # print('Estimated number of clusters: %d' % n_clusters_)
+    # print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
+    # print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
+    # print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
+    # print("Adjusted Rand Index: %0.3f"
+    #       % metrics.adjusted_rand_score(labels_true, labels))
+    # print("Adjusted Mutual Information: %0.3f"
+    #       % metrics.adjusted_mutual_info_score(labels_true, labels))
+    # print("Silhouette Coefficient: %0.3f"
+    #       % metrics.silhouette_score(X, labels))
 
     ##############################################################################
     # Plot result
