@@ -46,21 +46,19 @@ def snn_sim_matrix(X, k=5, t=1):
     samples_size, features_size = X.shape  # 数据集样本的个数和特征的维数
     nbrs = NearestNeighbors(n_neighbors=k, algorithm='kd_tree').fit(X)
     knn_matrix = nbrs.kneighbors(X, return_distance=False)  # 记录每个样本的k个最近邻对应的索引
-    sim_matrix = np.zeros((samples_size, samples_size), dtype=int)  # snn相似度矩阵
+    sim_matrix = np.zeros((samples_size, samples_size))  # snn相似度矩阵
     for i in range(samples_size):
         t = np.where(knn_matrix == i)[0]
         c = list(combinations(t, 2))
         for j in c:
             sim_matrix[j[0]][j[1]] += 1
             sim_matrix[j[1]][j[0]] += 1
-    max_ = sim_matrix.max()
-    min_ = sim_matrix.min()
     for i in range(samples_size):
         for j in range(samples_size):
             if sim_matrix[i][j] == 0:
-                sim_matrix[i][j] = 10
+                sim_matrix[i][j] = 2
             else:
-                sim_matrix[i][j] = 1. / sim_matrix[i][j]
+                sim_matrix[i][j] = 1 / sim_matrix[i][j]
     # return coo_matrix(sim_matrix)
     return sim_matrix
 
@@ -86,12 +84,11 @@ if __name__ == '__main__':
     print X.shape
     t1 = time.time()
     sim_matrix = snn_sim_matrix(X, k=8)
-    print sim_matrix
     t2 = time.time()
     print t2 - t1
     ##############################################################################
     # Compute DBSCAN
-    db = DBSCAN(eps=0.5, min_samples=3, metric='precomputed').fit(sim_matrix)
+    db = DBSCAN(eps=0.5, min_samples=14, metric='precomputed').fit(sim_matrix)
 
     core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
     core_samples_mask[db.core_sample_indices_] = True
