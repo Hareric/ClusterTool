@@ -1,52 +1,14 @@
-# # from pylab import *
-# # from mpl_toolkits.mplot3d import Axes3D
-# #
-# # fig = figure()
-# # ax = Axes3D(fig)
-# # X = np.arange(-4, 4, 0.25)
-# # Y = np.arange(-4, 4, 0.25)
-# # X, Y = np.meshgrid(X, Y)
-# # R = np.sqrt(X**2 + Y**2)
-# # Z = np.sin(R)
-# #
-# # ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='hot')
-# #
-# # show()
-#
-# import numpy
-#
-# from math import sqrt
-#
-# u = numpy.array([1, 2, 3])
-# v = [2, 1, 3]
-#
-#
-# def euclidean_distance2(u, v):
-#     """
-#     Returns the euclidean distance between vectors u and v. This is equivalent
-#     to the length of the vector (u - v).
-#     """
-#     diff = u - v
-#     return sqrt(numpy.dot(diff, diff))
-#
-#
-# print euclidean_distance2(u, v)
-
+# coding=utf-8
+from sklearn.datasets import make_blobs
+import matplotlib.pyplot as plt
 import numpy as np
-# from sklearn.neighbors import KDTree
-# import pickle
-# np.random.seed(0)
-# X = np.random.random((30, 3))
-# # print X
-# # r = np.linspace(0, 1, 5)
-# tree = KDTree(X, leaf_size=2)
-# dist, ind = tree.query(X[0], k=10)
-# # s = pickle.dumps(tree)
-# # print s
-# print ind
-# print dist
-from itertools import combinations
-a = np.array([[1, 2, 3], [2, 1, 4], [1, 5, 3]])
-b = np.array([2, 3, 2])
-c = np.where(a == 1)[0]
-print list(combinations(c, 2))
+# centers = [[1, 1], [-1, -1], [1, -1]]
+# centers_2 = [[3, 3], [-3, 3],[-3, -3]]
+# X, labels_true = make_blobs(n_samples=750, centers=centers, cluster_std=0.)
+# X_2, l_2 = make_blobs(n_samples=750, cluster_std=0.5, centers=centers_2)
+# X = np.concatenate((X, X_2))
+X = np.load('dataSet/diff_density_data.npy')
+plt.plot(X[:, 0], X[:, 1], 'o', markerfacecolor='y',
+                 markeredgecolor='k', markersize=10)
+plt.title("different density clusters")
+plt.show()

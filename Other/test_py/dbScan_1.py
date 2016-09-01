@@ -10,15 +10,19 @@ from sklearn.preprocessing import StandardScaler
 
 ##############################################################################
 # Generate sample data
-centers = [[1, 1], [-1, -1], [1, -1]]
-X, labels_true = make_blobs(n_samples=750, centers=centers, cluster_std=0.4,
-                            random_state=0)
-
-X = StandardScaler().fit_transform(X)
+# centers = [[1, 1], [-1, -1], [1, -1]]
+# X, labels_true = make_blobs(n_samples=750, centers=centers, cluster_std=0.4,
+#                             random_state=0)
+centers = [37, 4]
+centers_2 = [-37, 4]
+X, labels_true = make_blobs(n_samples=200, centers=centers, cluster_std=10)
+X_2, l_2 = make_blobs(n_samples=200, cluster_std=5, centers=centers_2)
+X = np.concatenate((X, X_2))
+# X = StandardScaler().fit_transform(X)
 ##############################################################################
 # Compute DBSCAN
 t1 = time.time()
-db = DBSCAN(eps=0.3, min_samples=10).fit(X)
+db = DBSCAN(eps=12, min_samples=15).fit(X)
 t2 = time.time()
 print t2 - t1
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
@@ -27,17 +31,17 @@ labels = db.labels_
 
 # Number of clusters in labels, ignoring noise if present.
 n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
-
-print('Estimated number of clusters: %d' % n_clusters_)
-print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
-print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
-print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
-print("Adjusted Rand Index: %0.3f"
-      % metrics.adjusted_rand_score(labels_true, labels))
-print("Adjusted Mutual Information: %0.3f"
-      % metrics.adjusted_mutual_info_score(labels_true, labels))
-print("Silhouette Coefficient: %0.3f"
-      % metrics.silhouette_score(X, labels))
+#
+# print('Estimated number of clusters: %d' % n_clusters_)
+# print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
+# print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
+# print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
+# print("Adjusted Rand Index: %0.3f"
+#       % metrics.adjusted_rand_score(labels_true, labels))
+# print("Adjusted Mutual Information: %0.3f"
+#       % metrics.adjusted_mutual_info_score(labels_true, labels))
+# print("Silhouette Coefficient: %0.3f"
+#       % metrics.silhouette_score(X, labels))
 
 ##############################################################################
 # Plot result
@@ -55,7 +59,7 @@ for k, col in zip(unique_labels, colors):
 
     xy = X[class_member_mask & core_samples_mask]
     plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
-             markeredgecolor='k', markersize=14)
+             markeredgecolor='k', markersize=8)
 
     xy = X[class_member_mask & ~core_samples_mask]
     plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
